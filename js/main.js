@@ -28,6 +28,36 @@ $(document).ready(()=>{
                     dots: true
                 }
             },
+            {
+                breakpoint: 621,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 1025,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 1219,
+                settings: {
+                    dots: true
+                }
+            },
 
         ]
     });
@@ -44,10 +74,25 @@ $(document).ready(()=>{
         }
         else {
             if (sliderIsLive) {
-                $('.your-slider').slick('unslick');
+                $('.examples-container').slick('unslick');
                 sliderIsLive = false;
             }
+        };
+        if (window.innerWidth <= 1220) {
+            $('.examples-container').slick({
+                infinite: true,
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                dots: true
+            });
+            sliderIsLive = true;
         }
+        else {
+            if (sliderIsLive) {
+                $('.examples-container').slick('unslick');
+                sliderIsLive = false;
+            }
+        };
     });
 
     $('.open-image').magnificPopup({
@@ -77,20 +122,31 @@ $(document).ready(()=>{
             hasError = true;
         } else {
             if (number.val()) {
-                $('.callback-sent').show();
-                $('.callback').hide();
-
-            }
+                $.ajax({
+                    type: 'post',
+                    url: 'mail.php',
+                    data: 'phone=' + number.val(),
+                    success: ()=> {
+                        $('.callback-sent').show();
+                        $('.callback').hide();
+                    },
+                    error: ()=> {
+                        $('.callback').hide();
+                        alert('Ошибка отправки запроса. Свяжитесь, пожалуйста, по телефону')
+                    }
+                });
+            };
             ;
         }
     });
 
     $('.burger').click(() => {
-        $('.header-container .header-items').css('display', 'flex');
+        $('.header-container .header-items, .header-container .logo').toggleClass('menu-open');
     });
     $('.header-items, .header-items a').click(() => {
-        $('.header-container .header-items').hide();
-    });
+        $('.header-container .header-items, .header-container .logo').removeClass('menu-open');
+    })
+
 
 
 
